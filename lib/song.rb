@@ -3,38 +3,58 @@ class Song
     
 
     @@count = 0
+    @@songs = []
+    @@artists = []
+    @@genres = []
 
     def initialize(name, artist, genre)
-        @name = name
-        @artist = artist
-        @genre = genre
+        
+        @@artists.push(artist)
+        @@genres.push(genre)
         @@count += 1
+
+        self.name = name
+        self.artist = artist
+        self.genre = genre
         
     end    
 
-    def self.count
+    def self.count 
         @@count
-      end    
-
-    def self.artists=(artists)
-        @@artists = artists
-    end    
-
+    end
     def self.artists
-        @@artists
-    end    
+        @@artists.uniq
+      end
+    
+      def self.genres
+        @@genres.uniq
+      end
+    
+      def self.genre_count
+        histogram = Hash.new
+        Song.genres.each do |genre|
+          histogram["#{genre}"] = @@genres.filter { |g| g == genre }.size
+        end
+        histogram
+      end
+    
+      def self.artist_count
+        histogram = Hash.new
+        Song.artists.each do |artist|
+          histogram["#{artist}"] = @@artists.filter { |art| art == artist }.size
+        end
+        histogram
+      end
 
     
 
 
 end
-song = Song.new("99 Problems", "Jay-Z", "rap")
-puts song.name
-puts song.artist
-puts song.genre
+Song.new("99 Problems", "Jay-Z", "rap")
+puts Song.name
+puts Song.artists
+puts Song.genres
 Song.new("99 Problems", "Jay-Z", "rap")
 Song.new("99 Problems", "Jay-Z", "rap")
 Song.new("99 Problems", "Jay-Z", "rap")
 puts Song.count
-Song.artists = 'Brittany Spears'
-p Song.artists
